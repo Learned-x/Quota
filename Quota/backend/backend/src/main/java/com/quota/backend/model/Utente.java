@@ -32,6 +32,9 @@ public class Utente {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
+    @Column(nullable = false, unique = true, length = 50)
+    private String username;
+
     // Getters and Setters
     public Long getId() {
         return id;
@@ -91,5 +94,13 @@ public class Utente {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }
