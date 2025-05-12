@@ -1,4 +1,4 @@
-package main.java.com.quota.backend.model;
+package com.quota.backend.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;

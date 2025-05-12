@@ -1,10 +1,11 @@
-package main.java.com.quota.backend.model;
+package com.quota.backend.model;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import com.quota.backend.model.Utente;
 
 @Entity
 public class Spesa {

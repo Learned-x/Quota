@@ -1,7 +1,9 @@
-package main.java.com.quota.backend.model;
+package com.quota.backend.model;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;
+import com.quota.backend.model.Spesa;
+import com.quota.backend.model.Utente;
 
 @Entity
 public class PartecipanteSpesa {

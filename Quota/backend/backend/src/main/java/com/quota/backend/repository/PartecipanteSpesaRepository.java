@@ -1,4 +1,4 @@
-package main.java.com.quota.backend.repository;
+package com.quota.backend.repository;
 
 import com.quota.backend.model.PartecipanteSpesa;
 import org.springframework.data.jpa.repository.JpaRepository;
