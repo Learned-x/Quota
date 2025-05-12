@@ -1,0 +1,7 @@
+package main.java.com.quota.backend.repository;
+
+import com.quota.backend.model.Avatar;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface AvatarRepository extends JpaRepository<Avatar, Long> {
+}
