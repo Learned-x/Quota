@@ -101,13 +101,14 @@
 
 ### **Fase 2: Sviluppo delle API**
 - **Autenticazione**:
-  - Completata l'implementazione del login con generazione di token JWT.
-  - Aggiunto supporto per la registrazione degli utenti con valori predefiniti per i campi `provider` e `username`.
+  - **Completato**: Registrazione con validazione input, crittografia password con bcrypt e valori predefiniti per `provider` e `username`.
+  - **Completato**: Login con generazione di token JWT.
+  - **Completato**: Logout con invalidazione dei token JWT e gestione degli errori per token scaduti o non validi.
 
 ### **Fase 4: Test e Documentazione**
 - **Test di integrazione**:
-  - Creati test di integrazione per verificare la registrazione degli utenti e la connessione al database PostgreSQL.
-  - Configurato un profilo di test specifico (`application-test.properties`) per utilizzare il database reale durante i test.
+  - **Completato**: Test per registrazione utenti e connessione al database PostgreSQL.
+  - **Completato**: Test per il metodo `logoutUser` in scenari di token valido, scaduto e non valido.
 
 ### **Database**
 - Rimosse tabelle ridondanti (`gruppo`, `utenti`, `spese`, `partecipanti_spese`) per semplificare la struttura del database.

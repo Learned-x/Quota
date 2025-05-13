@@ -2,15 +2,22 @@ package com.quota.backend.service;
 
 import com.quota.backend.model.Utente;
 import com.quota.backend.repository.UtenteRepository;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class AuthService {
@@ -22,6 +29,10 @@ public class AuthService {
     private BCryptPasswordEncoder passwordEncoder;
 
     private static final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+
+    private final Set<String> invalidatedTokens = ConcurrentHashMap.newKeySet();
+
+    private static final Logger logger = LoggerFactory.getLogger(AuthService.class);
 
     public Utente registerUser(String email, String password, String nome, String cognome) {
         // Validazione input
@@ -67,7 +78,32 @@ public class AuthService {
 
     // Metodo per il logout (invalida il token JWT, da implementare)
     public void logoutUser(String token) {
-        // Logica per invalidare il token JWT
+        try {
+            // Verifica se il token è valido prima di invalidarlo
+            Jwts.parserBuilder().setSigningKey(SECRET_KEY).build().parseClaimsJws(token);
+            invalidatedTokens.add(token);
+            logger.info("Token invalidato con successo: {}", token);
+        } catch (ExpiredJwtException e) {
+            logger.warn("Tentativo di logout con token scaduto: {}", token);
+            throw new IllegalArgumentException("Token scaduto"); // Corretto per lanciare il messaggio atteso
+        } catch (MalformedJwtException | SignatureException e) {
+            logger.error("Tentativo di logout con token non valido: {}", token);
+            throw new IllegalArgumentException("Token non valido");
+        }
+    }
+
+    public boolean isTokenValid(String token) {
+        try {
+            // Verifica se il token è valido e non nella blacklist
+            Jwts.parserBuilder().setSigningKey(SECRET_KEY).build().parseClaimsJws(token);
+            return !invalidatedTokens.contains(token);
+        } catch (ExpiredJwtException e) {
+            logger.warn("Token scaduto: {}", token);
+            return false;
+        } catch (MalformedJwtException | SignatureException e) {
+            logger.error("Token non valido: {}", token);
+            return false;
+        }
     }
 
     public static Key getSecretKey() {
