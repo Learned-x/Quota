@@ -1,2 +1,24 @@
 time="2025-05-13T12:18:16+02:00" level=error msg="Errore durante l'inserimento dell'utente" email=test@example.com error="ERROR: duplicate key value violates unique constraint \"ukgxvq4mjswnupehxnp35vawmo2\" (SQLSTATE 23505)" query="INSERT INTO utente (username, email, password, nome, cognome, provider, created_at) VALUES ($1, $2, $3, $4, $5, $6, NOW())" username=testuser
 time="2025-05-13T12:19:42+02:00" level=error msg="Errore durante l'inserimento dell'utente" email=test@example.com error="ERROR: duplicate key value violates unique constraint \"ukgxvq4mjswnupehxnp35vawmo2\" (SQLSTATE 23505)" query="INSERT INTO utente (username, email, password, nome, cognome, provider, created_at) VALUES ($1, $2, $3, $4, $5, $6, NOW())" username=testuser
+time="2025-05-13T13:26:03+02:00" level=info msg="Utente trovato" email=test@example.com user_id=4 username=testuser
+time="2025-05-13T13:35:17+02:00" level=info msg="Utente trovato" email=test@example.com user_id=4 username=testuser
+time="2025-05-13T13:39:37+02:00" level=error msg="Errore durante il recupero del profilo utente" error="utente non trovato" user_id=
+time="2025-05-13T13:39:41+02:00" level=info msg="Utente trovato" email=test@example.com user_id=4 username=testuser
+time="2025-05-13T13:39:50+02:00" level=error msg="Errore durante il recupero del profilo utente" error="utente non trovato" user_id=
+time="2025-05-13T13:40:09+02:00" level=error msg="Errore durante il recupero del profilo utente" error="utente non trovato" user_id=
+time="2025-05-13T13:44:15+02:00" level=info msg="Utente trovato" email=test@example.com user_id=4 username=testuser
+time="2025-05-13T13:45:48+02:00" level=info msg="Utente trovato" email=test@example.com user_id=4 username=testuser
+time="2025-05-13T13:45:57+02:00" level=error msg="Errore durante il recupero del profilo utente" error="utente non trovato" user_id=
+time="2025-05-13T13:47:11+02:00" level=info msg="Utente trovato" email=test@example.com user_id=4 username=testuser
+time="2025-05-13T13:47:23+02:00" level=info msg="Claims estratti dal token JWT" claims="map[exp:1.747223231e+09 user_id:4]"
+time="2025-05-13T13:47:23+02:00" level=info msg="ID utente aggiunto al contesto" user_id=4
+time="2025-05-13T13:47:23+02:00" level=error msg="Errore durante il recupero del profilo utente" error="utente non trovato" user_id=
+time="2025-05-13T13:49:21+02:00" level=info msg="Utente trovato" email=test@example.com user_id=4 username=testuser
+time="2025-05-13T13:49:32+02:00" level=info msg="Claims estratti dal token JWT" claims="map[exp:1.747223361e+09 user_id:4]"
+time="2025-05-13T13:49:32+02:00" level=info msg="ID utente aggiunto al contesto" user_id=4
+time="2025-05-13T13:49:32+02:00" level=info msg="Recupero del profilo utente iniziato" user_id=
+time="2025-05-13T13:49:32+02:00" level=error msg="ID utente mancante nel contesto"
+time="2025-05-13T13:49:47+02:00" level=info msg="Claims estratti dal token JWT" claims="map[exp:1.747223361e+09 user_id:4]"
+time="2025-05-13T13:49:47+02:00" level=info msg="ID utente aggiunto al contesto" user_id=4
+time="2025-05-13T13:49:47+02:00" level=info msg="Recupero del profilo utente iniziato" user_id=
+time="2025-05-13T13:49:47+02:00" level=error msg="ID utente mancante nel contesto"

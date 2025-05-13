@@ -1,0 +1,15 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Run Backend Tests",
+			"type": "shell",
+			"command": "go test ./...",
+			"problemMatcher": [
+				"$go"
+			],
+			"group": "test",
+			"isBackground": false
+		}
+	]
+}

@@ -11,12 +11,14 @@ import (
 )
 
 type User struct {
-	ID       int64
-	Username string
-	Email    string
-	Password string
-	Nome     string
-	Cognome  string
+	ID        int64
+	Username  string
+	Email     string
+	Password  string
+	Nome      string
+	Cognome   string
+	CreatedAt string
+	IDAvatar  *int64
 }
 
 // CreateUser salva un nuovo utente nel database
@@ -56,9 +58,27 @@ func GetUserByEmail(ctx context.Context, email string) (User, error) {
 	defer conn.Close(ctx)
 
 	var user User
-	query := `SELECT id, username, email, password, nome, cognome FROM utenti WHERE email = $1`
+	query := `SELECT id, username, email, password, nome, cognome FROM utente WHERE email = $1`
 	row := conn.QueryRow(ctx, query, email)
 	if err := row.Scan(&user.ID, &user.Username, &user.Email, &user.Password, &user.Nome, &user.Cognome); err != nil {
+		return User{}, errors.New("utente non trovato")
+	}
+
+	return user, nil
+}
+
+// GetUserByID recupera un utente dal database tramite ID
+func GetUserByID(ctx context.Context, userID string) (User, error) {
+	conn, err := connectToDatabase()
+	if err != nil {
+		return User{}, err
+	}
+	defer conn.Close(ctx)
+
+	var user User
+	query := `SELECT id, username, email, nome, cognome, created_at, id_avatar FROM utente WHERE id = $1`
+	row := conn.QueryRow(ctx, query, userID)
+	if err := row.Scan(&user.ID, &user.Username, &user.Email, &user.Nome, &user.Cognome, &user.CreatedAt, &user.IDAvatar); err != nil {
 		return User{}, errors.New("utente non trovato")
 	}
 

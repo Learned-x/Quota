@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -24,6 +25,11 @@ func RegisterUser(c *gin.Context) {
 	}
 
 	if err := c.ShouldBindJSON(&requestBody); err != nil {
+		logrus.WithFields(logrus.Fields{
+			"email":  requestBody.Email,
+			"status": http.StatusBadRequest,
+			"error":  err.Error(),
+		}).Error("Errore durante il binding dei dati JSON")
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Dati non validi"})
 		return
 	}
@@ -79,6 +85,11 @@ func Login(c *gin.Context) {
 	}
 
 	if err := c.ShouldBindJSON(&requestBody); err != nil {
+		logrus.WithFields(logrus.Fields{
+			"email":  requestBody.Email,
+			"status": http.StatusBadRequest,
+			"error":  err.Error(),
+		}).Error("Errore durante il binding dei dati JSON")
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Dati non validi"})
 		return
 	}
@@ -86,13 +97,27 @@ func Login(c *gin.Context) {
 	// Recupera l'utente dal database
 	user, err := models.GetUserByEmail(context.Background(), requestBody.Email)
 	if err != nil {
-		log.Printf("Errore durante il recupero dell'utente: %v", err)
+		logrus.WithFields(logrus.Fields{
+			"email":  requestBody.Email,
+			"status": http.StatusUnauthorized,
+			"error":  err.Error(),
+		}).Error("Errore durante il recupero dell'utente")
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Credenziali non valide"})
 		return
 	}
 
+	logrus.WithFields(logrus.Fields{
+		"user_id":  user.ID,
+		"username": user.Username,
+		"email":    user.Email,
+	}).Info("Utente trovato")
+
 	// Confronta la password
 	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(requestBody.Password)); err != nil {
+		logrus.WithFields(logrus.Fields{
+			"email":  requestBody.Email,
+			"status": http.StatusUnauthorized,
+		}).Error("Password errata")
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Credenziali non valide"})
 		return
 	}
@@ -100,10 +125,51 @@ func Login(c *gin.Context) {
 	// Genera il token JWT
 	token, err := utils.GenerateJWT(user.ID)
 	if err != nil {
-		log.Printf("Errore durante la generazione del token JWT: %v", err)
+		logrus.WithFields(logrus.Fields{
+			"user_id": user.ID,
+			"status":  http.StatusInternalServerError,
+			"error":   err.Error(),
+		}).Error("Errore durante la generazione del token JWT")
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Errore interno del server"})
 		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{"token": token})
+}
+
+// GetProfile restituisce i dati completi dell'utente autenticato
+func GetProfile(c *gin.Context) {
+	userID := c.GetString("user_id")
+	logrus.WithField("user_id", userID).Info("Recupero del profilo utente iniziato")
+
+	if userID == "" {
+		logrus.Error("ID utente mancante nel contesto")
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "ID utente mancante"})
+		return
+	}
+
+	// Recupera i dati dell'utente dal database
+	user, err := models.GetUserByID(context.Background(), userID)
+	if err != nil {
+		logrus.WithField("user_id", userID).WithError(err).Error("Errore durante il recupero del profilo utente")
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Errore durante il recupero del profilo utente"})
+		return
+	}
+
+	logrus.WithField("user_id", userID).Info("Profilo utente recuperato con successo")
+	c.JSON(http.StatusOK, gin.H{
+		"id":         user.ID,
+		"username":   user.Username,
+		"email":      user.Email,
+		"nome":       user.Nome,
+		"cognome":    user.Cognome,
+		"created_at": user.CreatedAt,
+		"id_avatar":  user.IDAvatar,
+	})
+}
+
+// Logout invalida il token JWT (placeholder per ora)
+func Logout(c *gin.Context) {
+	logrus.Info("Logout eseguito con successo")
+	c.JSON(http.StatusOK, gin.H{"message": "Logout eseguito con successo"})
 }

@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v4"
+	"github.com/sirupsen/logrus"
 )
 
 var jwtSecret = []byte("your_jwt_secret")
@@ -44,6 +45,7 @@ func MiddlewareJWT() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		tokenString := c.GetHeader("Authorization")
 		if tokenString == "" {
+			logrus.Error("Token mancante nell'header Authorization")
 			c.JSON(401, gin.H{"error": "Token mancante"})
 			c.Abort()
 			return
@@ -51,13 +53,26 @@ func MiddlewareJWT() gin.HandlerFunc {
 
 		claims, err := ValidateJWT(tokenString)
 		if err != nil {
+			logrus.WithError(err).Error("Errore durante la validazione del token JWT")
 			c.JSON(401, gin.H{"error": "Token non valido"})
 			c.Abort()
 			return
 		}
 
-		// Aggiungi i dati dell'utente al contesto
-		c.Set("user_id", claims["user_id"])
+		logrus.WithField("claims", claims).Info("Claims estratti dal token JWT")
+
+		// Verifica che il campo `user_id` sia presente nei claims
+		userID, ok := claims["user_id"].(float64)
+		if !ok {
+			logrus.Error("Campo user_id mancante o non valido nei claims del token JWT")
+			c.JSON(401, gin.H{"error": "Token non valido: ID utente mancante"})
+			c.Abort()
+			return
+		}
+
+		// Aggiungi l'ID utente al contesto
+		logrus.WithField("user_id", userID).Info("ID utente aggiunto al contesto")
+		c.Set("user_id", int64(userID))
 		c.Next()
 	}
 }
