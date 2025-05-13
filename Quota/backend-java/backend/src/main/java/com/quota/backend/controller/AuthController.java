@@ -23,6 +23,26 @@ public class AuthController {
         }
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<?> loginUser(@RequestBody LoginRequest request) {
+        try {
+            String token = authService.loginUser(request.getEmail(), request.getPassword());
+            return ResponseEntity.ok(new LoginResponse(token, "Login effettuato con successo"));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logoutUser(@RequestHeader("Authorization") String token) {
+        try {
+            authService.logoutUser(token.replace("Bearer ", ""));
+            return ResponseEntity.ok(new LogoutResponse("Logout effettuato con successo"));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     // Classe per la richiesta di registrazione
     public static class RegisterRequest {
         private String email;
@@ -81,6 +101,63 @@ public class AuthController {
 
         public Long getUserId() {
             return userId;
+        }
+    }
+
+    // Classe per la richiesta di login
+    public static class LoginRequest {
+        private String email;
+        private String password;
+
+        // Getter e Setter
+        public String getEmail() {
+            return email;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
+        }
+    }
+
+    // Classe per la risposta di login
+    public static class LoginResponse {
+        private String token;
+        private String message;
+
+        public LoginResponse(String token, String message) {
+            this.token = token;
+            this.message = message;
+        }
+
+        // Getter
+        public String getToken() {
+            return token;
+        }
+
+        public String getMessage() {
+            return message;
+        }
+    }
+
+    // Classe per la risposta di logout
+    public static class LogoutResponse {
+        private String message;
+
+        public LogoutResponse(String message) {
+            this.message = message;
+        }
+
+        // Getter
+        public String getMessage() {
+            return message;
         }
     }
 }

@@ -61,7 +61,7 @@ graph TD
 
 ## **Fase 2: Sviluppo MVP**
 1. **Backend**:
-   - Configurare il server con Spring Boot.
+   - Configurare il server con una nuova tecnologia (da definire, ad esempio Node.js con Express o Django).
    - Implementare le API per:
      - **Autenticazione**:
        - Registrazione/login con email/password.

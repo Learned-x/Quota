@@ -2,18 +2,17 @@
 
 ## **Fase 1: Configurazione Iniziale**
 1. **Setup del progetto**:
-   - Configurare il progetto Spring Boot con Maven.
-     - Creare un progetto su [Spring Initializr](https://start.spring.io/).
-     - Aggiungere dipendenze: Spring Web, Spring Data JPA, Spring Security, PostgreSQL.
+   - Configurare il progetto con una nuova tecnologia (ad esempio Node.js con Express o Django).
+   - Aggiungere dipendenze necessarie per il framework scelto.
    - Verificare che il progetto si avvii correttamente con un endpoint di test.
 2. **Configurazione del database**:
-   - Configurare il file `application.properties`:
-     - URL del database PostgreSQL.
+   - Configurare il file di configurazione del database:
+     - URL del database.
      - Credenziali di accesso.
-     - Dialetto Hibernate.
-   - Creare le entità JPA basate sullo schema SQL:
+     - Dialetto ORM (se applicabile).
+   - Creare le entità basate sullo schema SQL:
      - `Avatar`, `Utente`, `Gruppo`, `Spesa`, `PartecipanteSpesa`.
-     - Aggiungere annotazioni JPA per relazioni e vincoli.
+     - Aggiungere relazioni e vincoli.
 3. **Versionamento**:
    - Inizializzare un repository Git:
      - Creare un commit iniziale con il setup del progetto.
