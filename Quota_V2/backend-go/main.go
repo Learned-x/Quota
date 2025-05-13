@@ -2,15 +2,38 @@ package main
 
 import (
 	"context"
+	"io"
 	"log"
 	"os"
+	"path/filepath"
+
+	"Quota_V2/backend-go/routes"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v5"
 	"github.com/joho/godotenv"
+	"github.com/sirupsen/logrus"
 )
 
 func init() {
+	// Creazione della cartella per i log
+	logDir := "logs"
+	if err := os.MkdirAll(logDir, os.ModePerm); err != nil {
+		logrus.Fatalf("Errore durante la creazione della cartella dei log: %v", err)
+	}
+
+	// Configurazione di Logrus per scrivere sia su file che in console
+	logFilePath := filepath.Join(logDir, "backend.log")
+	logFile, err := os.OpenFile(logFilePath, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	if err != nil {
+		logrus.Fatalf("Errore durante l'apertura del file di log: %v", err)
+	}
+	multiWriter := io.MultiWriter(os.Stdout, logFile)
+	logrus.SetOutput(multiWriter)
+	logrus.SetFormatter(&logrus.TextFormatter{
+		FullTimestamp: true,
+	})
+
 	// Determina l'ambiente corrente
 	appEnv := os.Getenv("APP_ENV")
 	if appEnv == "" {
@@ -54,6 +77,9 @@ func main() {
 			"message": "pong",
 		})
 	})
+
+	// Configurare le rotte
+	routes.SetupRoutes(r)
 
 	// Porta del server
 	port := os.Getenv("PORT")
