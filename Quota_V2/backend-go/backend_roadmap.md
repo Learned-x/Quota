@@ -2,23 +2,23 @@
 
 ## **Fase 1: Setup del Progetto**
 1. **Inizializzazione del progetto**:
-   - Creare una nuova directory per il backend (es. `backend-go`).
-   - Inizializzare un modulo Go:
+   - ~~Creare una nuova directory per il backend (es. `backend-go`).~~ **Completato**
+   - ~~Inizializzare un modulo Go:~~ **Completato**
      ```bash
      go mod init quota-backend
      ```
-   - Configurare un file `.env` per le variabili d'ambiente (es. connessione al database).
+   - ~~Configurare un file `.env` per le variabili d'ambiente (es. connessione al database).~~ **Completato**
 
 2. **Setup del database**:
-   - Configurare la connessione a PostgreSQL utilizzando una libreria come `pgx` o `gorm`.
-   - Creare un file di migrazione per sincronizzare il database con il codice.
+   - ~~Configurare la connessione a PostgreSQL utilizzando una libreria come `pgx` o `gorm`.~~ **Completato**
+   - ~~Creare un file di migrazione per sincronizzare il database con il codice.~~ **Non necessario**
 
 3. **Setup del server**:
-   - Utilizzare un framework come **Gin** o **Echo** per gestire le API REST.
-   - Configurare il routing di base.
+   - ~~Utilizzare un framework come **Gin** o **Echo** per gestire le API REST.~~ **Completato**
+   - ~~Configurare il routing di base.~~ **Completato**
 
 4. **Struttura del progetto**:
-   - Organizzare il codice in pacchetti:
+   - ~~Organizzare il codice in pacchetti:~~ **In corso**
      - `controllers`: Logica delle API.
      - `models`: Definizione delle entità e interazioni con il database.
      - `routes`: Definizione degli endpoint.
