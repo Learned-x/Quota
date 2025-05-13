@@ -38,6 +38,8 @@ public class AuthService {
         utente.setPassword(encodedPassword);
         utente.setNome(nome);
         utente.setCognome(cognome);
+        utente.setProvider("email"); // Imposta il provider predefinito come 'email'
+        utente.setUsername(email); // Imposta il valore predefinito per il campo `username` come l'email dell'utente
 
         return utenteRepository.save(utente);
     }

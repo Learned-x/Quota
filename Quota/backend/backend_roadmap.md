@@ -94,3 +94,21 @@
    - Distribuire il backend in produzione:
      - Configurare il server di produzione.
      - Verificare che tutte le funzionalità siano operative.
+
+---
+
+## **Aggiornamenti Recenti**
+
+### **Fase 2: Sviluppo delle API**
+- **Autenticazione**:
+  - Completata l'implementazione del login con generazione di token JWT.
+  - Aggiunto supporto per la registrazione degli utenti con valori predefiniti per i campi `provider` e `username`.
+
+### **Fase 4: Test e Documentazione**
+- **Test di integrazione**:
+  - Creati test di integrazione per verificare la registrazione degli utenti e la connessione al database PostgreSQL.
+  - Configurato un profilo di test specifico (`application-test.properties`) per utilizzare il database reale durante i test.
+
+### **Database**
+- Rimosse tabelle ridondanti (`gruppo`, `utenti`, `spese`, `partecipanti_spese`) per semplificare la struttura del database.
+- Aggiornata la struttura del database per mantenere solo le tabelle necessarie (`avatar`, `gruppi`, `utente`, `spesa`, `partecipante_spesa`, `saldi`).
